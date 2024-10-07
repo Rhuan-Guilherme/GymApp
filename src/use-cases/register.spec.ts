@@ -5,7 +5,7 @@ import { compare } from 'bcryptjs'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
 describe('Users Test', () => {
-  test('Should hash passowd upon registration', async () => {
+  test('Should be able to register', async () => {
     const userRepository = new InMemoryUserRepository()
     const registerUseCase = new RegisterUseCase(userRepository)
 
@@ -48,7 +48,7 @@ describe('Users Test', () => {
       password: '123456',
     })
 
-    expect(() =>
+    await expect(() =>
       registerUseCase.exceute({
         name: 'Jonh Doe',
         email,
