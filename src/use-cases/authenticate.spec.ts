@@ -1,21 +1,26 @@
-import { describe, test, expect } from 'vitest'
+import { describe, test, expect, beforeEach } from 'vitest'
 import { AuthenticateUseCase } from './authenticate'
 import { InMemoryUserRepository } from '@/repositories/in-memory/in-memory-user-repository'
 import { hash } from 'bcryptjs'
 import { CredentialsInvalidError } from './errors/credentials-invalid-error'
 
-describe('Testing authenticate', () => {
-  test('Should be able authenticatre', async () => {
-    const userRepository = new InMemoryUserRepository()
-    const authenticateUseCase = new AuthenticateUseCase(userRepository)
+let userRepository: InMemoryUserRepository
+let sut: AuthenticateUseCase
 
+describe('Testing authenticate', () => {
+  beforeEach(() => {
+    userRepository = new InMemoryUserRepository()
+    sut = new AuthenticateUseCase(userRepository)
+  })
+
+  test('Should be able authenticatre', async () => {
     await userRepository.create({
       email: 'jhondoe@example.com',
       name: 'Jonh Doe',
       password_hash: await hash('123456', 6),
     })
 
-    const { user } = await authenticateUseCase.execute({
+    const { user } = await sut.execute({
       email: 'jhondoe@example.com',
       password: '123456',
     })
@@ -24,11 +29,8 @@ describe('Testing authenticate', () => {
   })
 
   test('Should not be authenticate with wrong email', () => {
-    const userRepository = new InMemoryUserRepository()
-    const authenticateUseCase = new AuthenticateUseCase(userRepository)
-
     expect(() =>
-      authenticateUseCase.execute({
+      sut.execute({
         email: 'jhondoe@example.com',
         password: '123456',
       }),
@@ -36,9 +38,6 @@ describe('Testing authenticate', () => {
   })
 
   test('Should not be authenticate with wrong password', async () => {
-    const userRepository = new InMemoryUserRepository()
-    const authenticateUseCase = new AuthenticateUseCase(userRepository)
-
     await userRepository.create({
       email: 'jhondoe@example.com',
       name: 'Jonh Doe',
@@ -46,7 +45,7 @@ describe('Testing authenticate', () => {
     })
 
     expect(() =>
-      authenticateUseCase.execute({
+      sut.execute({
         email: 'jhondoe@example.com',
         password: '123',
       }),
