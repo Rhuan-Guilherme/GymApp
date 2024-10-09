@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, vi, afterAll } from 'vitest'
+import { describe, test, expect, beforeEach, vi } from 'vitest'
 import { CheckInUseCase } from './check-in'
 import { InMemoryCheckInRepository } from '@/repositories/in-memory/in-memory-check-in-repository'
 import { afterEach } from 'node:test'
@@ -28,7 +28,6 @@ describe('Testing Check In', () => {
     vi.setSystemTime(new Date(2022, 0, 20, 8, 0, 0))
     await sup.execute({ userId: '1', gymId: '2' })
 
-    vi.setSystemTime(new Date(2022, 0, 21, 8, 0, 0))
     await expect(() =>
       sup.execute({ userId: '1', gymId: '2' }),
     ).rejects.toBeInstanceOf(Error)
@@ -38,6 +37,7 @@ describe('Testing Check In', () => {
     vi.setSystemTime(new Date(2022, 0, 20, 8, 0, 0))
     await sup.execute({ userId: '1', gymId: '2' })
 
+    vi.setSystemTime(new Date(2022, 0, 21, 8, 0, 0))
     const { checkIn } = await sup.execute({ userId: '1', gymId: '2' })
 
     expect(checkIn.id).toEqual(expect.any(String))
