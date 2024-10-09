@@ -15,7 +15,7 @@ describe('Testing Check In', () => {
     gymRepository = new InMemoryGymRepository()
     sup = new CheckInUseCase(checkInRepository, gymRepository)
 
-    gymRepository.items.push({
+    gymRepository.create({
       id: 'gym-id-01',
       description: 'JavaScript Gym',
       phone: '00000',
@@ -82,7 +82,7 @@ describe('Testing Check In', () => {
   })
 
   test('Should not be albe to check-in in on distant', async () => {
-    gymRepository.items.push({
+    gymRepository.create({
       id: 'gym-id-02',
       description: 'JavaScript Gym',
       phone: '00000',
