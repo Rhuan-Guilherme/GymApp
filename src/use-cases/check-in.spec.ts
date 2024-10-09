@@ -4,6 +4,8 @@ import { InMemoryCheckInRepository } from '@/repositories/in-memory/in-memory-ch
 import { afterEach } from 'node:test'
 import { InMemoryGymRepository } from '@/repositories/in-memory/in-memory-gym-repository'
 import { Decimal } from '@prisma/client/runtime/library'
+import { MaxDistanceError } from './errors/max-distance-error'
+import { MaxCheckInsError } from './errors/max-number-check-ins-error'
 
 let checkInRepository: InMemoryCheckInRepository
 let gymRepository: InMemoryGymRepository
@@ -58,7 +60,7 @@ describe('Testing Check In', () => {
         userLatitude: -15.6292954,
         userLongitude: -47.659926,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxCheckInsError)
   })
 
   test('Should be albe to check-in twice in different day ', async () => {
@@ -98,7 +100,7 @@ describe('Testing Check In', () => {
         userLatitude: -15.6292954,
         userLongitude: -47.659926,
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(MaxDistanceError)
   })
 })
 
