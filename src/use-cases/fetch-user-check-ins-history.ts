@@ -17,7 +17,7 @@ export class FecthUserCheckInsHistoryUseCase {
     userId,
     page,
   }: FecthUserCheckInsHistoryRequest): Promise<FecthUserCheckInsHistoryResponse> {
-    const checkIns = await this.checkInRepository.fyndManyUserId(userId, page)
+    const checkIns = await this.checkInRepository.findManyUserId(userId, page)
 
     return { checkIns }
   }
